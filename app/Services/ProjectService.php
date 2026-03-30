@@ -22,6 +22,6 @@ class ProjectService
 
     public function getProjectBySlug(string $slug): Project
     {
-        return Project::where('slug', $slug)->firstOrFail();
+        return Project::with('tags')->where('slug', $slug)->firstOrFail();
     }
 }
