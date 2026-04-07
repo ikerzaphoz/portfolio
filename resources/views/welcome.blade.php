@@ -139,4 +139,9 @@
     </div>
 </section>
 
+{{-- Logo --}}
+<div class="flex justify-center mb-8">
+    <img src="/images/logo.png" alt="Logo de Iker" class="h-24">
+</div>
+
 @endsection

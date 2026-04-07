@@ -1,0 +1,16 @@
+.env
+.env.example
+.git
+.github
+.gitignore
+node_modules
+tests
+storage/logs
+storage/framework/cache
+storage/framework/sessions
+storage/framework/views
+bootstrap/cache
+public/hot
+laravel_temp
+# vendor se instala en el stage builder, no necesitamos el local
+vendor

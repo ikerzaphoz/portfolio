@@ -79,13 +79,24 @@
         <nav class="max-w-6xl mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
 
-                <!-- Logo -->
-                <a href="{{ route('home') }}" class="flex items-center gap-2 group">
-                    <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-mono font-bold text-sm group-hover:bg-indigo-500 transition-colors">
-                        IK
-                    </div>
-                    <span class="font-semibold text-slate-100 group-hover:text-white transition-colors">
-                        Iker<span class="text-indigo-400">.</span>dev
+                <!-- Logo iZ -->
+                <a href="{{ route('home') }}" class="flex items-center gap-3 group">
+                    <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
+                        <defs>
+                            <linearGradient id="izGrad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#00f0ff"/>
+                                <stop offset="100%" stop-color="#0080ff"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- i -->
+                        <rect x="18" y="20" width="7" height="7" rx="1" fill="url(#izGrad)"/>
+                        <rect x="18" y="32" width="7" height="48" rx="1" fill="url(#izGrad)"/>
+                        <!-- Z -->
+                        <rect x="30" y="20" width="52" height="7" rx="1" fill="url(#izGrad)"/>
+                        <polygon points="82,27 30,73 30,80 82,80 82,73 38,73 82,27" fill="url(#izGrad)"/>
+                    </svg>
+                    <span class="font-semibold text-slate-100 group-hover:text-white transition-colors tracking-wide">
+                        iker<span style="background: linear-gradient(135deg, #00f0ff, #0080ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Z</span>
                     </span>
                 </a>
 

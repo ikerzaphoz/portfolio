@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\Category;
-use App\Models\Lead;
-use App\Models\Post;
 use App\Models\Project;
 use App\Models\Tag;
 use Illuminate\Database\Seeder;
@@ -15,18 +12,6 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // ── Taxonomías ──────────────────────────────────────────────────────
-        $categories = [
-            ['name' => 'Backend PHP',  'slug' => 'backend-php'],
-            ['name' => 'Arquitectura', 'slug' => 'arquitectura'],
-            ['name' => 'DevOps',       'slug' => 'devops'],
-            ['name' => 'Rendimiento',  'slug' => 'rendimiento'],
-        ];
-
-        foreach ($categories as $cat) {
-            Category::firstOrCreate(['slug' => $cat['slug']], $cat);
-        }
-
         $tags = [
             ['name' => 'PHP 8.3',      'slug' => 'php-83'],
             ['name' => 'Laravel',      'slug' => 'laravel'],
@@ -100,11 +85,5 @@ class DatabaseSeeder extends Seeder
             $tagIds = Tag::whereIn('slug', $tagSlugs)->pluck('id');
             $project->tags()->syncWithoutDetaching($tagIds);
         }
-
-        // ── Posts de relleno (10) ────────────────────────────────────────────
-        Post::factory(10)->published()->create();
-
-        // ── Leads de relleno (5) ─────────────────────────────────────────────
-        Lead::factory(5)->create();
     }
 }
