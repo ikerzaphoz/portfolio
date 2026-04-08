@@ -80,7 +80,7 @@
             <div class="flex items-center justify-between">
 
                 <!-- Logo iZ -->
-                <a href="{{ route('home') }}" class="flex items-center gap-3 group">
+                <a href="{{ route('home', [], false) }}" class="flex items-center gap-3 group">
                     <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
                         <defs>
                             <linearGradient id="izGrad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
@@ -103,12 +103,12 @@
                 <!-- Desktop Nav -->
                 <ul class="hidden md:flex items-center gap-8">
                     <li>
-                        <a href="{{ route('home') }}" class="nav-link text-sm text-slate-400 hover:text-slate-100 transition-colors">
+                        <a href="{{ route('home', [], false) }}" class="nav-link text-sm text-slate-400 hover:text-slate-100 transition-colors">
                             Inicio
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('projects.index') }}" class="nav-link text-sm text-slate-400 hover:text-slate-100 transition-colors">
+                        <a href="{{ route('projects.index', [], false) }}" class="nav-link text-sm text-slate-400 hover:text-slate-100 transition-colors">
                             Proyectos
                         </a>
                     </li>
@@ -148,8 +148,8 @@
                  x-cloak
                  class="md:hidden mt-4 pb-4 border-t border-slate-800">
                 <ul class="flex flex-col gap-1 pt-4">
-                    <li><a href="{{ route('home') }}" class="block px-2 py-2 text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 rounded-md transition-colors text-sm">Inicio</a></li>
-                    <li><a href="{{ route('projects.index') }}" class="block px-2 py-2 text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 rounded-md transition-colors text-sm">Proyectos</a></li>
+                    <li><a href="{{ route('home', [], false) }}" class="block px-2 py-2 text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 rounded-md transition-colors text-sm">Inicio</a></li>
+                    <li><a href="{{ route('projects.index', [], false) }}" class="block px-2 py-2 text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 rounded-md transition-colors text-sm">Proyectos</a></li>
                     <li><a href="#contacto" class="block px-2 py-2 text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 rounded-md transition-colors text-sm">Contacto</a></li>
                     <li><a href="https://github.com" target="_blank" class="block px-2 py-2 text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 rounded-md transition-colors text-sm">GitHub</a></li>
                 </ul>
@@ -182,8 +182,8 @@
                 <div class="space-y-4">
                     <h4 class="text-slate-300 font-medium text-sm uppercase tracking-wider">Navegación</h4>
                     <ul class="space-y-2">
-                        <li><a href="{{ route('home') }}" class="text-slate-500 hover:text-indigo-400 text-sm transition-colors">Inicio</a></li>
-                        <li><a href="{{ route('projects.index') }}" class="text-slate-500 hover:text-indigo-400 text-sm transition-colors">Proyectos</a></li>
+                        <li><a href="{{ route('home', [], false) }}" class="text-slate-500 hover:text-indigo-400 text-sm transition-colors">Inicio</a></li>
+                        <li><a href="{{ route('projects.index', [], false) }}" class="text-slate-500 hover:text-indigo-400 text-sm transition-colors">Proyectos</a></li>
                     </ul>
                 </div>
 

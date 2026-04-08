@@ -51,7 +51,7 @@
 
             {{-- CTAs --}}
             <div class="flex flex-col sm:flex-row gap-4 pt-2">
-                <a href="{{ route('projects.index') }}"
+                <a href="{{ route('projects.index', [], false) }}"
                    class="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-6 py-3 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-indigo-600/25">
                     Ver proyectos
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -98,7 +98,7 @@
 
         @if($projects->count() > 0)
             <div class="mt-12 text-center">
-                <a href="{{ route('projects.index') }}"
+                <a href="{{ route('projects.index', [], false) }}"
                    class="inline-flex items-center gap-2 border border-slate-700 hover:border-indigo-500 text-slate-400 hover:text-indigo-400 px-6 py-3 rounded-lg transition-all duration-200 text-sm font-mono">
                     Ver todos los proyectos
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

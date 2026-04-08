@@ -17,9 +17,9 @@
 
         {{-- Breadcrumb --}}
         <nav class="flex items-center gap-2 text-sm font-mono text-slate-600 mb-8">
-            <a href="{{ route('home') }}" class="hover:text-slate-400 transition-colors">~</a>
+            <a href="{{ route('home', [], false) }}" class="hover:text-slate-400 transition-colors">~</a>
             <span>/</span>
-            <a href="{{ route('projects.index') }}" class="hover:text-slate-400 transition-colors">proyectos</a>
+            <a href="{{ route('projects.index', [], false) }}" class="hover:text-slate-400 transition-colors">proyectos</a>
             <span>/</span>
             <span class="text-slate-400 truncate">{{ $project->slug }}</span>
         </nav>
@@ -221,7 +221,7 @@
 {{-- ===================== NAVEGACIÓN ===================== --}}
 <section class="py-16 border-t border-slate-800 bg-zinc-950">
     <div class="max-w-4xl mx-auto px-6">
-        <a href="{{ route('projects.index') }}"
+        <a href="{{ route('projects.index', [], false) }}"
            class="inline-flex items-center gap-2 text-slate-500 hover:text-indigo-400 transition-colors text-sm font-mono group">
             <svg class="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"/>

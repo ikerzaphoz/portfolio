@@ -58,7 +58,7 @@
 
         <!-- Footer links -->
         <div class="flex items-center justify-between pt-2 border-t border-slate-800">
-            <a href="{{ route('projects.show', $project->slug) }}"
+            <a href="{{ route('projects.show', $project->slug, false) }}"
                class="flex items-center gap-1.5 text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors group/link">
                 Caso de estudio
                 <svg class="w-4 h-4 group-hover/link:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
