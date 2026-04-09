@@ -59,19 +59,6 @@ class DatabaseSeeder extends Seeder
                 'order'       => 2,
                 'tags'        => ['php', 'prestashop', 'wordpress', 'laravel', 'symfony', 'vuejs', 'react', 'mysql'],
             ],
-            [
-                'title'       => 'Integraciones y APIs REST para E-commerce',
-                'slug'        => 'integraciones-apis-rest-ecommerce',
-                'description' => 'Integración de sistemas internos mediante APIs REST para automatizar flujos entre plataformas e-commerce y herramientas de gestión empresarial.',
-                'problem'     => 'Los negocios operaban con sistemas aislados (ERP, CRM, plataforma e-commerce) que no se comunicaban entre sí, provocando duplicidad de datos y tiempos operativos elevados.',
-                'solution'    => 'Diseñé e implementé integraciones API REST con PHP y Laravel para conectar las distintas plataformas. Desarrollé sincronización automática de catálogos, stocks y pedidos entre sistemas.',
-                'results'     => 'Eliminación de procesos manuales de sincronización de datos. Reducción drástica de errores humanos. Visibilidad unificada del negocio en tiempo real.',
-                'stack'       => json_encode(['PHP', 'Laravel', 'Symfony', 'API REST', 'MySQL', 'Docker']),
-                'is_featured' => true,
-                'status'      => 'published',
-                'order'       => 3,
-                'tags'        => ['php', 'laravel', 'symfony', 'api-rest', 'mysql', 'docker'],
-            ],
         ];
 
         foreach ($keyProjects as $data) {
