@@ -54,8 +54,9 @@ jobs:
                 '- Laravel 11 / PHP 8.3+',
                 '- PostgreSQL (usa SQLite en memoria para tests si no hay BD disponible)',
                 '- PHPUnit 10 (`vendor/bin/phpunit`)',
+                '',
+                '@copilot por favor completa esta tarea siguiendo los pasos indicados.',
               ].join('\n'),
-              assignees: ['copilot'],
               labels: ['automated', 'qa', 'copilot-task'],
             });
 
@@ -92,8 +93,9 @@ jobs:
                 '6. Ejecuta `vendor/bin/phpunit` para verificar que nada se rompe.',
                 '7. Haz commit con prefijo `refactor:` o `perf:` según corresponda.',
                 '8. **No hagas push ni abras PR** — deja la rama lista para revisión manual.',
+                '',
+                '@copilot por favor completa esta tarea siguiendo los pasos indicados.',
               ].join('\n'),
-              assignees: ['copilot'],
               labels: ['automated', 'improvements', 'copilot-task'],
             });
 
@@ -125,7 +127,8 @@ jobs:
                 '6. Guarda el informe en `.github/reviews/security/weekly-' + date + '.md`.',
                 '7. Haz commit del informe en la rama.',
                 '8. **No hagas push ni abras PR** — deja la rama lista para revisión manual.',
+                '',
+                '@copilot por favor completa esta tarea siguiendo los pasos indicados.',
               ].join('\n'),
-              assignees: ['copilot'],
               labels: ['automated', 'security', 'copilot-task'],
             });
