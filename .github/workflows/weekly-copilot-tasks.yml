@@ -1,0 +1,131 @@
+name: Weekly Copilot Agent Tasks
+
+on:
+  schedule:
+    # Cada lunes a las 08:00 UTC
+    - cron: '0 8 * * 1'
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'Tarea a ejecutar'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - tests
+          - improvements
+          - security
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  create-qa-task:
+    name: Crear tarea QA semanal
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'schedule' || inputs.task == 'all' || inputs.task == 'tests' }}
+    steps:
+      - name: Crear issue de QA para Copilot
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const date = new Date().toISOString().split('T')[0];
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `[QA Semanal] Ejecutar suite de tests — ${date}`,
+              body: [
+                '## Tarea automática semanal',
+                '',
+                'Ejecuta la suite completa de PHPUnit en este repositorio Laravel 11.',
+                '',
+                '### Pasos requeridos',
+                '1. Crea la rama `tests/weekly-' + date + '` desde `main`.',
+                '2. Prepara el entorno: copia `.env.example` a `.env.testing` y genera la clave.',
+                '3. Ejecuta `vendor/bin/phpunit --testsuite Unit`.',
+                '4. Ejecuta `vendor/bin/phpunit --testsuite Feature`.',
+                '5. Guarda el informe en `tests/reports/weekly-' + date + '.md`.',
+                '6. Haz commit del informe en la rama.',
+                '7. **No hagas push ni abras PR** — deja la rama lista para revisión manual.',
+                '',
+                '### Stack',
+                '- Laravel 11 / PHP 8.3+',
+                '- PostgreSQL (usa SQLite en memoria para tests si no hay BD disponible)',
+                '- PHPUnit 10 (`vendor/bin/phpunit`)',
+              ].join('\n'),
+              assignees: ['copilot'],
+              labels: ['automated', 'qa', 'copilot-task'],
+            });
+
+  create-improvements-task:
+    name: Crear tarea de mejoras semanal
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'schedule' || inputs.task == 'all' || inputs.task == 'improvements' }}
+    steps:
+      - name: Crear issue de mejoras para Copilot
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const date = new Date().toISOString().split('T')[0];
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `[Mejoras Semanales] Code review y refactor — ${date}`,
+              body: [
+                '## Tarea automática semanal',
+                '',
+                'Analiza el codebase y propón mejoras de calidad siguiendo las convenciones del proyecto.',
+                '',
+                '### Pasos requeridos',
+                '1. Crea la rama `improvements/weekly-' + date + '` desde `main`.',
+                '2. Revisa `app/Services/`, `app/Models/` y `app/Http/Controllers/`.',
+                '3. Identifica mejoras en estas categorías (máximo 10):',
+                '   - Consultas Eloquent sin `select()` explícito (evitar SELECT *)',
+                '   - Lógica de negocio en controladores (debe ir en Services)',
+                '   - Código duplicado entre clases',
+                '   - N+1 queries (usar `with()` o `load()`)',
+                '   - Falta de tipado PHP 8.3+',
+                '4. Aplica solo los cambios seguros (sin cambiar comportamiento).',
+                '5. Ejecuta `vendor/bin/pint` para formatear.',
+                '6. Ejecuta `vendor/bin/phpunit` para verificar que nada se rompe.',
+                '7. Haz commit con prefijo `refactor:` o `perf:` según corresponda.',
+                '8. **No hagas push ni abras PR** — deja la rama lista para revisión manual.',
+              ].join('\n'),
+              assignees: ['copilot'],
+              labels: ['automated', 'improvements', 'copilot-task'],
+            });
+
+  create-security-task:
+    name: Crear tarea de seguridad semanal
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'schedule' || inputs.task == 'all' || inputs.task == 'security' }}
+    steps:
+      - name: Crear issue de auditoría de seguridad para Copilot
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const date = new Date().toISOString().split('T')[0];
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `[Seguridad Semanal] Auditoría de configuración — ${date}`,
+              body: [
+                '## Tarea automática semanal',
+                '',
+                'Revisa la configuración de seguridad del repositorio.',
+                '',
+                '### Pasos requeridos',
+                '1. Crea la rama `review/security-weekly-' + date + '` desde `main`.',
+                '2. Verifica que `.env.example` no contiene valores reales.',
+                '3. Comprueba que ningún archivo rastreado contiene tokens, passwords o API keys.',
+                '4. Revisa que `Dockerfile` (si existe) no ejecuta como `root`.',
+                '5. Verifica que los workflows en `.github/workflows/` tienen `permissions` mínimos.',
+                '6. Guarda el informe en `.github/reviews/security/weekly-' + date + '.md`.',
+                '7. Haz commit del informe en la rama.',
+                '8. **No hagas push ni abras PR** — deja la rama lista para revisión manual.',
+              ].join('\n'),
+              assignees: ['copilot'],
+              labels: ['automated', 'security', 'copilot-task'],
+            });
