@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('title', 'Proyectos — Iker Zapata | Full-Stack Senior')
+@section('meta_description', 'Casos de estudio reales de Iker Zapata: plataformas e-commerce B2B, APIs REST, integraciones de sistemas y arquitecturas PHP a medida. Proyectos con resultados tangibles.')
+@section('canonical', route('projects.index'))
 
 @section('content')
 

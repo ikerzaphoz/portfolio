@@ -1,7 +1,56 @@
 @extends('layouts.app')
 
-@section('title', $project->title . ' — Caso de Estudio')
+@section('title', $project->title . ' — Caso de Estudio | Iker Zapata')
 @section('meta_description', \Illuminate\Support\Str::limit($project->description ?? '', 160))
+@section('canonical', route('projects.show', $project->slug))
+@section('og_type', 'article')
+@section('og_image', $project->cover_image ? asset($project->cover_image) : asset('images/logo.png'))
+@section('og_image_alt', $project->title . ' — Caso de estudio por Iker Zapata')
+
+@section('schema')
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Inicio",
+                    "item": "{{ url('/') }}"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Proyectos",
+                    "item": "{{ route('projects.index') }}"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": {!! json_encode($project->title) !!},
+                    "item": "{{ route('projects.show', $project->slug) }}"
+                }
+            ]
+        },
+        {
+            "@type": "Article",
+            "headline": {!! json_encode($project->title) !!},
+            "description": {!! json_encode(\Illuminate\Support\Str::limit($project->description ?? '', 200)) !!},
+            "url": "{{ route('projects.show', $project->slug) }}",
+            "author": {
+                "@type": "Person",
+                "name": "Iker Zapata",
+                "url": "{{ url('/') }}"
+            }@if($project->cover_image),
+            "image": "{{ asset($project->cover_image) }}"@endif
+        }
+    ]
+}
+</script>
+@endsection
 
 @section('content')
 
