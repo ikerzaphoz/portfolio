@@ -2,6 +2,50 @@
 
 @section('title', 'Iker Zapata — Full-Stack Senior | PHP & E-commerce')
 @section('meta_description', 'Programador Full-Stack Senior con más de 10 años transformando modelos de negocio tradicionales en plataformas e-commerce potentes. Especialista en PHP, PrestaShop, Laravel y arquitectura a medida.')
+@section('canonical', url('/'))
+@section('og_image', asset('images/logo.png'))
+@section('og_image_alt', 'Iker Zapata — Programador Full-Stack Senior PHP & E-commerce')
+
+@section('schema')
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "Person",
+            "@id": "{{ url('/') }}#person",
+            "name": "Iker Zapata",
+            "jobTitle": "Programador Full-Stack Senior",
+            "description": "Programador Full-Stack Senior con más de 10 años transformando modelos de negocio tradicionales en plataformas e-commerce potentes. Especialista en PHP, PrestaShop, Laravel y arquitectura a medida.",
+            "url": "{{ url('/') }}",
+            "email": "hola@ikerzaphoz.dev",
+            "telephone": "+34677874951",
+            "sameAs": [
+                "https://linkedin.com/in/ikerzaphoz",
+                "https://github.com/ikerzaphoz"
+            ],
+            "knowsAbout": ["PHP", "Laravel", "PrestaShop", "E-commerce", "Docker", "SQL", "JavaScript", "CSS", "HTML"],
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Granada",
+                "addressCountry": "ES"
+            }
+        },
+        {
+            "@type": "WebSite",
+            "@id": "{{ url('/') }}#website",
+            "url": "{{ url('/') }}",
+            "name": "Iker Zapata — Full-Stack Senior",
+            "description": "Portfolio profesional de Iker Zapata, Programador Full-Stack Senior especialista en PHP y e-commerce.",
+            "inLanguage": "es-ES",
+            "author": {
+                "@id": "{{ url('/') }}#person"
+            }
+        }
+    ]
+}
+</script>
+@endsection
 
 @section('content')
 
