@@ -7,6 +7,38 @@
     <title>@yield('title', 'Iker Zapata — Programador Full-Stack Senior')</title>
     <meta name="description"
         content="@yield('meta_description', 'Programador Full-Stack Senior con más de 10 años transformando modelos de negocio tradicionales en potentes plataformas e-commerce. Especialista en PHP y arquitectura a medida.')">
+    <meta name="author" content="Iker Zapata">
+    <meta name="robots" content="@yield('robots', 'index, follow')">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="@yield('canonical', url()->current())">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:site_name" content="Iker Zapata — Full-Stack Senior">
+    <meta property="og:locale" content="es_ES">
+    <meta property="og:title" content="@yield('title', 'Iker Zapata — Programador Full-Stack Senior')">
+    <meta property="og:description"
+        content="@yield('meta_description', 'Programador Full-Stack Senior con más de 10 años transformando modelos de negocio tradicionales en potentes plataformas e-commerce. Especialista en PHP y arquitectura a medida.')">
+    <meta property="og:url" content="@yield('canonical', url()->current())">
+    <meta property="og:image" content="@yield('og_image', asset('images/logo.png'))">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt"
+        content="@yield('og_image_alt', 'Iker Zapata — Programador Full-Stack Senior')">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('title', 'Iker Zapata — Programador Full-Stack Senior')">
+    <meta name="twitter:description"
+        content="@yield('meta_description', 'Programador Full-Stack Senior con más de 10 años transformando modelos de negocio tradicionales en potentes plataformas e-commerce. Especialista en PHP y arquitectura a medida.')">
+    <meta name="twitter:image" content="@yield('og_image', asset('images/logo.png'))">
+
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+    <link rel="dns-prefetch" href="https://unpkg.com">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -94,6 +126,9 @@
     </style>
 
     @yield('head')
+
+    <!-- Structured Data (JSON-LD) -->
+    @yield('schema')
 </head>
 
 <body class="bg-zinc-950 text-slate-300 antialiased min-h-screen flex flex-col">
@@ -184,7 +219,7 @@
                     <li><a href="#contacto"
                             class="block px-2 py-2 text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 rounded-md transition-colors text-sm">Contacto</a>
                     </li>
-                    <li><a href="https://linkedin.com/in/ikerzaphoz" target="_blank"
+                    <li><a href="https://linkedin.com/in/ikerzaphoz" target="_blank" rel="noopener noreferrer"
                             class="block px-2 py-2 text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 rounded-md transition-colors text-sm">LinkedIn</a>
                     </li>
                     <li><a href="https://github.com/ikerzaphoz/" target="_blank" rel="noopener noreferrer"
