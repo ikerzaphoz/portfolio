@@ -20,18 +20,11 @@
     <div class="relative max-w-6xl mx-auto px-6 py-32">
         <div class="max-w-3xl space-y-8">
 
-            {{-- Badge --}}
-            <div class="inline-flex items-center gap-2 border border-slate-700/60 bg-slate-900/60 backdrop-blur-sm rounded-full px-4 py-1.5">
-                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                <span class="text-slate-400 text-sm font-mono">Disponible · Granada, España</span>
-            </div>
-
             {{-- Headline --}}
             <div class="space-y-2">
                 <h1 class="text-5xl md:text-7xl font-bold leading-[1.05] tracking-tight">
                     <span class="text-slate-100">Iker Zapata,</span><br>
                     <span class="gradient-text">Full-Stack Senior</span><br>
-                    <span class="text-slate-100">& E-commerce.</span>
                 </h1>
             </div>
 
@@ -45,7 +38,7 @@
 
             {{-- Stack inline --}}
             <div class="flex flex-wrap items-center gap-2">
-                @foreach(['PHP', 'PrestaShop', 'Laravel', 'Symfony', 'Vue.js', 'React', 'Docker', 'SQL'] as $tech)
+                @foreach(['PHP', 'Laravel', 'Docker', 'SQL', 'JavaScript', 'CSS', 'HTML'] as $tech)
                     <x-badge>{{ $tech }}</x-badge>
                 @endforeach
             </div>
@@ -65,21 +58,11 @@
                 </a>
             </div>
         </div>
-
-        {{-- Stats --}}
-        <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 pt-12 border-t border-slate-800/60">
-            @foreach([['10+', 'Años de experiencia'], ['60%', 'Ventas totales via plataforma B2B'], ['2', 'Empresas donde he trabajado'], ['2017', 'Año en ENTRECORTINAS']] as [$stat, $label])
-                <div class="space-y-1">
-                    <p class="text-3xl font-bold text-indigo-400 font-mono">{{ $stat }}</p>
-                    <p class="text-slate-500 text-sm">{{ $label }}</p>
-                </div>
-            @endforeach
-        </div>
     </div>
 </section>
 
 {{-- ===================== PROYECTOS DESTACADOS ===================== --}}
-<section class="py-24 bg-zinc-950">
+<section class="py-16 bg-zinc-950 pt-0">
     <div class="max-w-6xl mx-auto px-6">
 
         <x-section-header
@@ -122,9 +105,9 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @foreach([
-                ['icon' => 'M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z', 'title' => 'E-commerce & Marketplaces', 'desc' => 'Desarrollo de plataformas B2B y marketplace con PrestaShop y WordPress. Automatización de flujos operativos e integración de sistemas internos.'],
-                ['icon' => 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4', 'title' => 'Backend PHP & APIs', 'desc' => 'Desarrollo con PHP, Laravel y Symfony. Integración entre sistemas y construcción de APIs REST para conectar plataformas e-commerce.'],
-                ['icon' => 'M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z', 'title' => 'Frontend Moderno', 'desc' => 'Interfaces con Vue.js, React y Angular. HTML5, CSS3, JavaScript, jQuery y Ajax para experiencias de usuario responsivas.'],
+                ['icon' => 'M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z', 'title' => 'E-commerce & Marketplaces', 'desc' => 'Desarrollo de plataformas B2B y marketplace a medida. Automatización de flujos operativos e integración de sistemas internos.'],
+                ['icon' => 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4', 'title' => 'Backend PHP & APIs', 'desc' => 'Desarrollo con PHP. Integración entre sistemas y construcción de APIs REST para conectar servicios.'],
+                ['icon' => 'M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z', 'title' => 'Frontend Moderno', 'desc' => 'Interfaces HTML5, CSS3, JavaScript, jQuery y Ajax para experiencias de usuario adaptables a diferentes dispositivos.'],
             ] as $item)
                 <div class="group p-6 bg-slate-900 border border-slate-800 rounded-xl hover:border-indigo-500/40 transition-all duration-300 space-y-4">
                     <div class="w-10 h-10 bg-indigo-500/10 border border-indigo-500/20 rounded-lg flex items-center justify-center group-hover:bg-indigo-500/20 transition-colors">
@@ -167,8 +150,9 @@
                         </div>
                         <p class="text-xs font-mono text-slate-500 mb-4">Marzo 2017 – Actualmente</p>
                         <ul class="space-y-2 text-slate-400 text-sm leading-relaxed">
-                            <li class="flex gap-2"><span class="text-indigo-400 shrink-0 mt-0.5">→</span>Liderazgo técnico en el desarrollo integral de una plataforma B2B/Marketplace, logrando que el <span class="text-slate-300 font-medium">60% de las ventas totales</span> de la compañía se realicen a través de este canal.</li>
-                            <li class="flex gap-2"><span class="text-indigo-400 shrink-0 mt-0.5">→</span>Implementación de automatización y optimización de flujos de trabajo mediante la integración de sistemas internos, reduciendo drásticamente los tiempos operativos.</li>
+                            <li class="flex gap-2"><span class="text-indigo-400 shrink-0 mt-0.5">→</span>Desarrollo integral de una plataforma B2B/Marketplace, logrando que el mayor porcentaje de las ventas totales de la compañía se realicen a través de este canal.</li>
+                            <li class="flex gap-2"><span class="text-indigo-400 shrink-0 mt-0.5">→</span>Implementación de automatización y optimización de flujos de trabajo mediante la integración de sistemas internos, reduciendo los tiempos operativos.</li>
+                            <li class="flex gap-2"><span class="text-indigo-400 shrink-0 mt-0.5">→</span>Desarrollo de APIs REST para interconectar sistemas, facilitando la comunicación entre plataformas y automatizando procesos del negocio.</li>
                             <li class="flex gap-2"><span class="text-indigo-400 shrink-0 mt-0.5">→</span>Gestión directa del cliente: toma de requisitos, presentación de avances y soporte técnico especializado.</li>
                         </ul>
                     </div>
@@ -209,7 +193,6 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @foreach([
                 ['year' => '2014', 'title' => 'Técnico Superior de Desarrollo de Aplicaciones Web', 'center' => 'IES Zaidín Vergeles'],
-                ['year' => '2015', 'title' => 'Diseñador y Programador Web',                        'center' => 'Academia IEAN'],
                 ['year' => '2009', 'title' => 'Técnico de Administración de Sistemas Informáticos', 'center' => 'IES Zaidín Vergeles'],
             ] as $edu)
                 <div class="group p-6 bg-slate-900 border border-slate-800 rounded-xl hover:border-indigo-500/40 transition-all duration-300 space-y-3">
@@ -239,10 +222,4 @@
 
     </div>
 </section>
-
-{{-- Logo --}}
-<div class="flex justify-center mb-8">
-    <img src="/images/logo.png" alt="Logo de Iker" class="h-24">
-</div>
-
 @endsection
