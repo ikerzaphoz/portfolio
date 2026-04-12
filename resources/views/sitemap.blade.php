@@ -2,17 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>{{ url('/') }}</loc>
+        <lastmod>{{ now()->toW3cString() }}</lastmod>
         <changefreq>monthly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
-        <loc>{{ route('projects.index') }}</loc>
+        <loc>{{ route("projects.index") }}</loc>
+        @php $latestProject = $projects->sortByDesc("updated_at")->first(); @endphp
+        <lastmod>{{ $latestProject ? $latestProject->updated_at->toW3cString() : now()->toW3cString() }}</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     @foreach($projects as $project)
     <url>
-        <loc>{{ route('projects.show', $project->slug) }}</loc>
+        <loc>{{ route("projects.show", $project->slug) }}</loc>
         <lastmod>{{ $project->updated_at->toW3cString() }}</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>

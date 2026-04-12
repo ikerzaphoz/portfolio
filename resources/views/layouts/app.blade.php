@@ -22,6 +22,8 @@
         content="@yield('meta_description', 'Programador Full-Stack Senior con más de 10 años transformando modelos de negocio tradicionales en potentes plataformas e-commerce. Especialista en PHP y arquitectura a medida.')">
     <meta property="og:url" content="@yield('canonical', url()->current())">
     <meta property="og:image" content="@yield('og_image', asset('images/logo.png'))">
+    <meta property="og:image:width" content="@yield('og_image_width', '1200')">
+    <meta property="og:image:height" content="@yield('og_image_height', '630')">
     <meta property="og:image:alt"
         content="@yield('og_image_alt', 'Iker Zapata — Programador Full-Stack Senior')">
 
@@ -31,6 +33,7 @@
     <meta name="twitter:description"
         content="@yield('meta_description', 'Programador Full-Stack Senior con más de 10 años transformando modelos de negocio tradicionales en potentes plataformas e-commerce. Especialista en PHP y arquitectura a medida.')">
     <meta name="twitter:image" content="@yield('og_image', asset('images/logo.png'))">
+    <meta name="twitter:image:alt" content="@yield('og_image_alt', 'Iker Zapata — Programador Full-Stack Senior')">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>

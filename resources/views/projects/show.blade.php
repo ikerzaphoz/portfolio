@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', $project->title . ' — Caso de Estudio | Iker Zapata')
-@section('meta_description', \Illuminate\Support\Str::limit($project->description ?? '', 160))
+@section('meta_description', \Illuminate\Support\Str::limit($project->description ?: 'Caso de estudio real de Iker Zapata, Programador Full-Stack Senior especialista en PHP y e-commerce.', 160))
 @section('canonical', route('projects.show', $project->slug))
 @section('og_type', 'article')
 @section('og_image', $project->cover_image ? asset($project->cover_image) : asset('images/logo.png'))
@@ -37,9 +37,12 @@
         },
         {
             "@type": "Article",
+            "@id": "{{ route('projects.show', $project->slug) }}#article",
             "headline": {!! json_encode($project->title) !!},
             "description": {!! json_encode(\Illuminate\Support\Str::limit($project->description ?? '', 200)) !!},
             "url": "{{ route('projects.show', $project->slug) }}",
+            "datePublished": "{{ $project->created_at->toIso8601String() }}",
+            "dateModified": "{{ $project->updated_at->toIso8601String() }}",
             "author": {
                 "@type": "Person",
                 "name": "Iker Zapata",

@@ -4,6 +4,35 @@
 @section('meta_description', 'Casos de estudio reales de Iker Zapata: plataformas e-commerce B2B, APIs REST, integraciones de sistemas y arquitecturas PHP a medida. Proyectos con resultados tangibles.')
 @section('canonical', route('projects.index'))
 
+@section('schema')
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": "{{ route('projects.index') }}#collection",
+    "name": "Proyectos — Iker Zapata | Full-Stack Senior",
+    "description": "Casos de estudio reales de Iker Zapata: plataformas e-commerce B2B, APIs REST, integraciones de sistemas y arquitecturas PHP a medida.",
+    "url": "{{ route('projects.index') }}",
+    "inLanguage": "es-ES",
+    "author": {
+        "@type": "Person",
+        "name": "Iker Zapata",
+        "url": "{{ url('/') }}"
+    },
+    "hasPart": [
+        @foreach($projects as $index => $project)
+        {
+            "@type": "Article",
+            "@id": "{{ route('projects.show', $project->slug) }}#article",
+            "headline": {!! json_encode($project->title) !!},
+            "url": "{{ route('projects.show', $project->slug) }}"
+        }{{ !$loop->last ? ',' : '' }}
+        @endforeach
+    ]
+}
+</script>
+@endsection
+
 @section('content')
 
 <section class="relative pt-32 pb-20 overflow-hidden">
