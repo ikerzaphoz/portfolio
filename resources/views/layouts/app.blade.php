@@ -140,7 +140,6 @@
                 <a href="{{ route('home', [], false) }}" class="flex items-center gap-3 group">
                     <img src="{{ asset('images/logo.png') }}" alt="Logo"
                         class="h-24 flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
-                    <span class="font-semibold text-slate-100 group-hover:text-white transition-colors tracking-wide">
                 </a>
 
                 <!-- Desktop Nav -->

@@ -115,14 +115,16 @@
             description="Proyectos reales con problemas reales. Sin demos genéricas."
         />
 
-        @forelse($projects as $project)
-            <x-project-card :project="$project" />
-        @empty
-            <div class="col-span-full py-20 text-center space-y-4">
-                <div class="text-slate-700 font-mono text-4xl">404</div>
-                <p class="text-slate-500">No hay proyectos aún. Ejecuta <code class="font-mono bg-slate-800 text-indigo-400 px-1.5 py-0.5 rounded text-sm">php artisan db:seed</code></p>
-            </div>
-        @endforelse
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @forelse($projects as $project)
+                <x-project-card :project="$project" />
+            @empty
+                <div class="col-span-full py-20 text-center space-y-4">
+                    <div class="text-slate-700 font-mono text-4xl">404</div>
+                    <p class="text-slate-500">No hay proyectos aún. Ejecuta <code class="font-mono bg-slate-800 text-indigo-400 px-1.5 py-0.5 rounded text-sm">php artisan db:seed</code></p>
+                </div>
+            @endforelse
+        </div>
 
         @if($projects->count() > 0)
             <div class="mt-12 text-center">

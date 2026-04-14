@@ -6,7 +6,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [ProjectController::class, 'index'])->name('home');
+Route::get('/', [ProjectController::class, 'home'])->name('home');
 
 Route::prefix('proyectos')->name('projects.')->group(function () {
     Route::get('/', [ProjectController::class, 'index'])->name('index');

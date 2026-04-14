@@ -11,13 +11,23 @@ use Illuminate\View\View;
 class ProjectController extends Controller
 {
     /**
-     * Muestra la lista de proyectos destacados en la Home.
+     * Muestra la homepage con los proyectos destacados.
      */
-    public function index(ProjectService $projectService): View
+    public function home(ProjectService $projectService): View
     {
         $projects = $projectService->getFeaturedProjects();
 
         return view('welcome', compact('projects'));
+    }
+
+    /**
+     * Muestra el listado paginado de todos los proyectos.
+     */
+    public function index(ProjectService $projectService): View
+    {
+        $projects = $projectService->getPaginatedProjects();
+
+        return view('projects.index', compact('projects'));
     }
 
     /**
