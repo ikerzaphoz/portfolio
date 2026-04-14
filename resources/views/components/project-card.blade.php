@@ -1,5 +1,5 @@
 {{-- Componente: project-card.blade.php --}}
-{{-- Props: $project --}}
+@props(['project'])
 
 <article class="group relative flex flex-col bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-indigo-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-indigo-950/30 hover:-translate-y-0.5">
 
@@ -46,12 +46,13 @@
 
         <!-- Stack badges -->
         @if(!empty($project->stack))
+            @php $stack = (array) $project->stack; @endphp
             <div class="flex flex-wrap gap-1.5">
-                @foreach(array_slice(is_array($project->stack) ? $project->stack : json_decode($project->stack, true) ?? [], 0, 4) as $tech)
+                @foreach(array_slice($stack, 0, 4) as $tech)
                     <x-badge>{{ $tech }}</x-badge>
                 @endforeach
-                @if(count(is_array($project->stack) ? $project->stack : json_decode($project->stack, true) ?? []) > 4)
-                    <span class="text-xs font-mono text-slate-600 self-center">+{{ count(is_array($project->stack) ? $project->stack : json_decode($project->stack, true) ?? []) - 4 }}</span>
+                @if(count($stack) > 4)
+                    <span class="text-xs font-mono text-slate-600 self-center">+{{ count($stack) - 4 }}</span>
                 @endif
             </div>
         @endif
