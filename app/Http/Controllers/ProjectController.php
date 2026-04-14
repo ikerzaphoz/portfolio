@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Services\ProjectService;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ProjectController extends Controller
