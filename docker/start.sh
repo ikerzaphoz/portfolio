@@ -1,29 +1,33 @@
 #!/bin/sh
 set -e
 
-# Si no existe un .env en el contenedor, copiar el .env.production
-if [ ! -f /var/www/html/.env ]; then
-    cp /var/www/html/.env.production /var/www/html/.env
+cd /var/www/html
+
+# Si no existe .env en el contenedor ( backed up en volumen de primera ejecucion ), copiar .env.production
+if [ ! -f .env ]; then
+    cp .env.production .env
 fi
 
-# Inicializar la base de datos SQLite si no existe
+# Inicializar la base de datos SQLite si no existe (el directorio viene del volumen app-database)
 DB_PATH="/var/www/html/database/database.sqlite"
 if [ ! -f "$DB_PATH" ]; then
     touch "$DB_PATH"
-    chown www-data:www-data "$DB_PATH"
 fi
 
-cd /var/www/html
+# Permisos: el volumen puede venir con root como propietario la primera vez
+chown -R www-data:www-data database storage bootstrap/cache 2>/dev/null || true
 
-# Migrar y sembrar (idempotente con firstOrCreate)
+# Migrar (idempotente: safe en arranques posteriores)
 php artisan migrate --force
-php artisan db:seed --force
+php artisan db:seed --force 2>/dev/null || true
 
-# Caché de configuración / rutas para producción
+# Cache de config/rutas/views para producción
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Arrancar PHP-FPM en background y luego Nginx en primer plano
+# Arrancar PHP-FPM como root (master) en background; workers como www-data (por defecto)
 php-fpm -D
+
+# Nginx en primer plano (espera a que el socket FPM este listo)
 exec nginx -g "daemon off;"

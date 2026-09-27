@@ -54,7 +54,11 @@ RUN mkdir -p storage/logs storage/framework/sessions \
 COPY docker/start.sh /start.sh
 RUN chmod +x /start.sh
 
-# Cloud Run espera el puerto 8080
+# Puerto HTTP interno (nginx -> php-fpm 9000). Caddy hace proxy a app:8080
 EXPOSE 8080
+
+# Healthcheck contra la ruta de salud de Laravel (/up)
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 --start-period=40s \
+    CMD curl -fsS http://127.0.0.1:8080/up || exit 1
 
 CMD ["/start.sh"]
