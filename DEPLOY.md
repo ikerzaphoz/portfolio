@@ -1,13 +1,33 @@
 # Migración de Google Cloud Run → VPS Hetzner
 
-Guía completa para mover el portfolio de Cloud Run a un VPS de Hetzner con Docker Compose + Caddy.
+Guía completa para mover el portfolio de Cloud Run a un VPS de Hetzner con Docker Compose.
+*(MIGRACIÓN COMPLETADA — VPS `ubuntu-4gb-nbg1-1`, 116.203.42.29)*
+
+## Arquitectura real (pos-migración)
+
+> El VPS ya sirve **n8n** con su propio Caddy edge. Para no duplicar proxies,
+> el portfolio se integra en ese edge: sin puertos propios y sin TLS propio.
+
+```
+Internet ──► n8n-caddy-1 (ports 80/443, TLS Let's Encrypt)
+              ├── n8n.ikerzaphoz.dev ──► n8n:5678
+              └── ikerzaphoz.dev      ──► portfolio-app-1:8080  (red n8n_default, alias `portfolio`)
+
+portfolio-app-1  = ghcr.io/ikerzaphoz/portfolio (nginx+fpm, SQLite)
+                   volúmenes: portfolio_app-database, portfolio_app-storage
+                   /opt/portfolio/.env  = APP_KEY + SITE_DOMAIN
+```
+
+- El `docker-compose.yml` de este repo **ya no define** el servicio `caddy`.
+- El `/opt/n8n/Caddyfile` mantiene ambos site blocks.
+- El workflow de deploy (`.github/workflows/deploy.yml`): build → GHCR → SSH → `compose pull && up -d --no-deps app` → curl `/up`.
 
 ## Cambios respecto a Cloud Run
 
 | Antes (Cloud Run)                   | Ahora (VPS)                              |
 | ----------------------------------- | ---------------------------------------- |
 | Imagen desplegada por artifact/CI   | Imagen de GHCR + `docker compose`        |
-| Puerto 8080 gestionado por GCP      | Caddy como proxy con HTTPS automático    |
+| Puerto 8080 gestionado por GCP      | Caddy de n8n como edge con HTTPS auto    |
 | Sin TLS (lo termina Google)         | Caddy emite cert. Let's Encrypt al vuelo |
 | FS efímero (SQLite en imagen)       | Volúmenes persistentes `app-database`    |
 | Despliegue manual (`gcloud run`)    | GitHub Actions → SSH → compose up        |
