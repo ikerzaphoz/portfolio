@@ -1,0 +1,190 @@
+MANUAL DE DESPLIEGUE - PORTFOLIO IKER
+=====================================
+Servidor: Hetzner ubuntu-4gb-nbg1-1 (116.203.42.29)
+Dominio:  https://ikerzaphoz.dev
+Ultima actualizacion: 2026-09-29
+
+
+1. ARQUITECTURA
+---------------
+Internet
+   |
+   v
+[Caddy (n8n-caddy-1)]  <-- proxy edge con HTTPS automatico (puertos 80/443)
+   |-- n8n.ikerzaphoz.dev  --> n8n:5678        (stack n8n, /opt/n8n)
+   |-- ikerzaphoz.dev      --> portfolio:8080  (red docker n8n_default, alias "portfolio")
+   |
+   v
+[portfolio-app-1] = imagen ghcr.io/ikerzaphoz/portfolio
+   nginx(8080 interno) -> php-fpm(9000) -> Laravel 11 + SQLite
+
+Ficheros clave en el VPS:
+   /opt/portfolio/docker-compose.yml   (definicion del stack del portfolio)
+   /opt/portfolio/.env                 (APP_KEY + SITE_DOMAIN, permisos 600)
+   /opt/n8n/Caddyfile                  (edge routes de ambos dominios)
+
+
+2. DESPLIEGUE NORMAL (automatico)
+-----------------------------------------------
+1) Edita codigo y haz commit + push a main:
+      git commit -m "..." && git push origin main
+   El workflow "Deploy" (.github/workflows/deploy.yml) hace:
+      a. Build de la imagen con Buildx y push a GHCR (ghcr.io/ikerzaphoz/portfolio:latest + :sha-xxxx)
+         URL de la corrida en: https://github.com/ikerzaphoz/portfolio/actions
+      b. SSH al VPS (usuario "deploy") y ejecuta en /opt/portfolio:
+            docker compose pull app
+            docker compose up -d --no-deps app
+            docker image prune -f
+      c. Verifica con curl hasta 200 en https://ikerzaphoz.dev/up
+
+2) Si quieres desplegar sin push (botonazo manual):
+      - GitHub -> Actions -> Deploy -> "Run workflow"
+      - O desde tu maquina: gh workflow run deploy.yml --repo ikerzaphoz/portfolio
+
+
+3. DESPLIEGUE MANUAL (primer arranque en un VPS nuevo)
+------------------------------------------------------
+1) Provisionar el VPS ejecutando el script del repo:
+      curl -fsSL https://raw.githubusercontent.com/ikerzaphoz/portfolio/main/provision.sh | bash
+   (instala Docker, crea usuario deploy + grupo docker, mete la SSH key de CI en
+    /home/deploy/.ssh/authorized_keys, crea /opt/portfolio y habilita ufw 22/80/443)
+
+2) Copiar al VPS:
+      scp docker-compose.yml root@IP:/opt/portfolio/
+      scp .env (con APP_KEY real) root@IP:/opt/portfolio/ ; chmod 600
+
+3) Integrar en el Caddy edge (si es un server donde ya hay Caddy edge):
+      - conectar el stack a la red: en el compose ya viene ("external: n8n_default")
+      - anadir site block en /opt/n8n/Caddyfile y reiniciar n8n-caddy-1
+   (Si fuera un VPS virgen sin edge: descomenta el servicio caddy en el compose
+    original de este repo — está en git history — y mapea 80/443)
+
+4) Arrancar y verificar:
+      cd /opt/portfolio && docker compose pull && docker compose up -d
+      docker compose ps                    (app en "healthy")
+      curl -I https://tu-dominio/up       (200)
+
+
+4. ROLLBACK
+-----------
+En el VPS:
+      cd /opt/portfolio
+      docker compose down                  (NO toca los volúmenes)
+   edita docker-compose.yml: image: ghcr.io/ikerzaphoz/portfolio:sha-XXXXXXXX  <- tag sha de la version buena
+      docker compose up -d
+
+
+5. COMANDOS UTILES EN EL VPS
+----------------------------
+cd /opt/portfolio
+docker compose ps                        estado
+docker compose logs -f app               logs en vivo Laravel (stderr -> docker)
+docker compose exec app php artisan tinker
+docker compose restart app               re-arranque rapido
+docker compose up -d                     arrancar si caido
+docker compose down                      parar (mantiene volúmenes)
+docker compose down -v                   OJO: DESTRUYE la base datos, no usar en prod
+Volumenes: portfolio_app-database (sqlite)  portfolio_app-storage (storage/)
+
+
+6. BACKUP DE LA BASE DE DATOS
+-----------------------------
+# Backup puntual
+docker exec portfolio-app-1 sh -c "apk add --no-cache sqlite && sqlite3 /var/www/html/database/database.sqlite '.backup /tmp/db.sqlite'"
+docker cp portfolio-app-1:/tmp/db.sqlite ./db-backup-$(date +%F).sqlite
+
+# Backup diario automatico (cron en el VPS, retencion 14 dias)
+0 4 * * * cd /opt/portfolio && docker exec portfolio-app-1 php artisan down --now 2>/dev/null; \
+  docker exec portfolio-app-1 sqlite3 /var/www/html/database/database.sqlite ".backup /tmp/db.sqlite" && \
+  docker cp portfolio-app-1:/tmp/db.sqlite /opt/backups/db-$(date +\%F).sqlite && \
+  docker exec portfolio-app-1 php artisan up 2>/dev/null; \
+  find /opt/backups -name 'db-*.sqlite' -mtime +14 -delete
+(mkdir -p /opt/backups antes)
+
+
+7. SI QUIERES ANADIR OTRO SUBDOMINIO
+------------------------------------
+1) Porkbun -> DNS Records -> A subdominio.ikerzaphoz.dev -> 116.203.42.29
+2) Editar /opt/n8n/Caddyfile y anadir block:
+      otro.ikerzaphoz.dev {
+          reverse_proxy NOMBRE_CONTENEDOR:PUERTO
+      }
+3) Validar y reiniciar:
+      docker exec n8n-caddy-1 caddy validate --config /etc/caddy/Caddyfile && docker restart n8n-caddy-1
+   Caddy emite el certificado Let's Encrypt automaticamente al primer acceso.
+   (Requisito: el contenedor destino debe estar en red n8n_default)
+
+
+8. CLAVES / SECRETS GITHUB (Settings > Secrets and variables > Actions)
+----------------------------------------------------------------------
+VPS_HOST      116.203.42.29
+VPS_USER      deploy
+VPS_SSH_KEY   clave privada ED25519 (comentada "github-actions-deploy")
+              local: C:\Users\Iker_\.ssh\gha_deploy
+APP_KEY vive en /opt/portfolio/.env del servidor (NO versionar)
+
+
+9. QUE ES CADA HERRAMIENTA / LIBRERIA
+-------------------------------------
+- Docker: motor de contenedores. Todo lo del servidor corre en contenedores
+  (imagenes inmutables), aislados unos de otros.
+
+- Docker Compose: herramienta para definir conjuntos de contenedores en un
+  YAML (docker-compose.yml): imagen, variables, volumenes, redes, restart.
+  Un "docker compose up" orquesta todo.
+
+- Caddy: servidor web/reverse-proxy escrito en Go. Sus dos casas:
+     a) HTTPS AUTOMATICO (Let's Encrypt/ACME) sin tocar certificados
+     b) Config sencilla y limata (Caddyfile)
+  En tu VPS es el edge: acepta 80/443, termina TLS y reparte a cada
+  dominio su contenedor detras.
+
+- Let's Encrypt: CA gratuita de certificados TLS. Caddy pide cert para el
+  dominio mediante el challenge ACME (HTTP/TLS-ALPN) y lo renueva solo.
+
+- PHP-FPM: proceso PHP FastCGI. nginx entrega la peticion a FPM por
+  puerto 9000 interno; FPM ejecuta Laravel y devuelve la respuesta.
+
+- Nginx: servidor web dentro de la imagen de la app. En la imagen del
+  portfolio escucha el 8080 interno y hace de front de los estaticos.
+
+- Laravel 11: framework PHP del portfolio (vistas Blade, Eloquent sobre
+  SQLite; ruta health "/up" que usa el healthcheck del contenedor).
+
+- SQLite: base de datos embebida en un fichero (database.sqlite). Con los
+  volumenes docker persiste entre despliegues.
+
+- GHCR (GitHub Container Registry): repositorio de imagenes docker de
+  GitHub. Aqui viven las versiones de la app (tags = latest, sha-XXXX).
+
+- GitHub Actions: CI/CD de GitHub. El workflow deploy.yml construye la
+  imagen, la publica en GHCR y hace SSH al VPS para actualizarla.
+
+- Docker Buildx: builder de imagenes con caché GHA y build multi-stage.
+
+- appleboy/ssh-action: accion de GitHub Actions que ejecuta comandos en un
+  VPS por SSH usando las claves/secretos del repo.
+
+- Hetzner Cloud API: consola REST de Hetzner, util para gestionar el VPS
+  (rescue mode, reboots, etc.) sin entrar en el panel web.
+
+- ufw: firewall de Ubuntu. En el VPS: Allow 22, 80, 443; resto bloqueado.
+
+- deploy (usuario): usuario del VPS sin privilegios root que solo pertenece
+  al grupo "docker" para poder gestionar contenedores.
+
+
+10. TROUBLESHOOTING RAPIDO
+--------------------------
+- La web da 502 / no responde: docker compose ps; los logs del app
+  ("docker compose logs app --tail 50"). Revisa que /opt/n8n/Caddyfile
+  apunte al alias correcto y n8n-caddy-1 este corriendo.
+- Certificado no emitido / ERR_SSL: docker logs n8n-caddy-1. Revisa DNS
+  (A correcto, sin AAAA sobrantes) y puertos 80/443 en Hetzner firewall.
+- Deploy en Actions falla en SSH: secretos (VPS_HOST/USER/SSH_KEY) y que la
+  public key este en /home/deploy/.ssh/authorized_keys del VPS.
+- Deploy falla al pull: el package GHCR debe estar PUBLICO (o login PAT).
+- App 500 tras deploy: docker compose logs app; revisa APP_KEY en /opt/portfolio/.env
+  y haz "docker compose restart app".
+- Certificado caducado en el navegador: docker logs n8n-caddy-1 | grep certificate;
+  si no se renueva, forzalo con docker restart n8n-caddy-1.
