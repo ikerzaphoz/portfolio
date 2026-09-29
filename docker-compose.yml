@@ -11,6 +11,11 @@ services:
     volumes:
       - app-database:/var/www/html/database
       - app-storage:/var/www/html/storage
+    networks:
+      default: {}
+      n8n:
+        aliases:
+          - portfolio
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8080/up"]
       interval: 30s
@@ -23,29 +28,11 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  caddy:
-    image: caddy:2-alpine
-    restart: unless-stopped
-    depends_on:
-      - app
-    ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
-    environment:
-      SITE_DOMAIN: ${SITE_DOMAIN:-ikerzaphoz.dev}
-    volumes:
-      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy-data:/data
-      - caddy-config:/config
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
-
 volumes:
   app-database:
   app-storage:
-  caddy-data:
-  caddy-config:
+
+networks:
+  n8n:
+    external: true
+    name: n8n_default
